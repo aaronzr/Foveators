@@ -3,23 +3,24 @@ import RPi.GPIO as GPIO
 import time
 import sys
 
-def setup():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(18, GPIO.OUT)
-    pwm = GPIO.PWM(18, 100)
-    pwm.start(2.5)
-    
 
 dutyR = 15.5
 dutyL = 10.5
 duty0 = 14.0
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(18, GPIO.OUT)
+pwm = GPIO.PWM(18, 100)
+pwm.start(2.5)
+
 def rot(deg):
 	if deg > 0:
 		pwm.ChangeDutyCycle(dutyL)
-		time.sleep(0.5)
+		# 0.05s = 360 deg
+                slp_time = (float(deg)/360.0)*0.05
+                time.sleep(slp_time)
 		pwm.ChangeDutyCycle(duty0)
-	
+
 # class App:
 # 	
 #     def __init__(self, master):
@@ -42,13 +43,13 @@ def rot(deg):
 
 def main():
     args = sys.argv[1:]
-
     if not args:
         print 'usage: angle'
         sys.exit(1)
-    setup()
+    
     angle = args[0]
     rot(angle)
+    GPIO.cleanup()
     exit(1)
 
 if __name__ == '__main__':

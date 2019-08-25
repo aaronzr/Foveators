@@ -12,7 +12,7 @@ class App:
     def __init__(self, master):
         frame = Frame(master)
         frame.pack()
-        scale = Scale(frame, from_=100, to=130, 
+        scale = Scale(frame, from_=105, to=130, 
               orient=HORIZONTAL, command=self.update)
         scale.grid(row=0)
 
